@@ -1,0 +1,54 @@
+<ion-content>
+  <div class="wrapper">
+    <div class="close">
+      <ion-icon 
+        (click)="closeModal()"
+        name="close-outline"  
+        matTooltip="Adicionar despesa"
+        matTooltipPosition="left">
+      </ion-icon>
+    </div>
+    <p class="title">Adicionar despesa</p>
+
+    <form [formGroup]="addExpenseForm" autocomplete="off" (submit)="onSubmit()">
+      
+      <mat-form-field>
+        <mat-label>Nome da despesa</mat-label>
+        <input matInput formControlName="name" mask="S*">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Valor</mat-label>
+        <input matInput 
+          mask="separator.2" 
+          thousandSeparator="." 
+          separatorLimit="10000" 
+          formControlName="value"
+          prefix="R$ ">
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Data vencimento</mat-label>
+        <input matInput [matDatepicker]="picker" formControlName="expireDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+      <mat-checkbox color="primary" formControlName="monthly">
+        Despesa mensal?
+      </mat-checkbox>
+
+      <mat-form-field>
+        <mat-label>Descrição</mat-label>
+        <textarea matInput formControlName="description"></textarea>
+      </mat-form-field>
+
+
+      <div class=" center-items">
+        <button type="submit" class="primary" [disabled]="addExpenseForm.invalid">Adicionar</button>
+      </div>
+
+    </form>
+
+  </div>
+</ion-content>

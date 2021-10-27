@@ -1,0 +1,45 @@
+@import '../../theme/variables.scss';
+@import '../../theme/mixins.scss';
+
+
+.container {
+
+    padding: 10px;
+
+    .add-expense {
+        padding-right: .5rem;
+        @include display(flex-end, center);
+        ion-icon {
+            color: $green-primary;
+            font-size: 1.5rem;
+        }
+
+    }
+
+    mat-expansion-panel {
+        margin: 6px 0;;
+    
+    }
+    
+    .expense-data {
+        
+        p { margin: .5rem 0 ;}
+    
+        .payment-status {
+            width: fit-content;
+            padding: 0.3rem;
+            font-weight: 500;
+            color: $white-primary;
+            border-radius: 3px;
+            margin: 1rem;
+        }
+        
+        .paid {
+            background-color: $green-primary;
+        }
+        
+        .not-paid {
+            background-color: $red-primary;
+        }
+    }
+}

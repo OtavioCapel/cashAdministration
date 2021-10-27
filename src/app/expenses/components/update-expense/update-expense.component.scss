@@ -1,0 +1,27 @@
+@import '../../../../theme/mixins.scss';
+@import '../../../../theme/variables.scss';
+
+.wrapper {
+
+    padding: 1rem;
+
+    mat-form-field {
+        width: 100%;
+    }
+
+    .title {
+        font-size: 1.4rem;
+        font-weight: 500;
+        color: $purple-primary;
+        margin-bottom: 1rem;
+    }
+
+    .close {
+        @include display(flex-end, center);
+        ion-icon {
+            font-size: 1.7rem;
+            color: gray
+        }
+    
+    }
+}

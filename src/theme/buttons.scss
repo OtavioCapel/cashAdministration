@@ -1,0 +1,26 @@
+@import './variables.scss';
+
+button {
+
+    min-width: 100px;
+    font-weight: 500;
+    border-radius: 15px;
+    height: 30px;
+
+    &.primary {
+        color: $purple-primary;
+        border: 1px solid $purple-primary;
+        background-color: transparent;
+
+        &:active {
+            background-color: $purple-primary;
+            color: #fff;
+        }
+    }
+
+    &:disabled {
+        background-color: $gray-primary;
+        color: #fff;
+        border: none;
+    }
+}
