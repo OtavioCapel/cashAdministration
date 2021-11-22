@@ -24,4 +24,18 @@
         }
     
     }
+
+    mat-checkbox {
+        margin-bottom: .5rem;
+    }
+
+    .flex-evenly {
+        margin-top: 1rem;
+        @include display(space-evenly, center);
+    }
+
+    textarea {
+        resize: none;
+    }
+
 }

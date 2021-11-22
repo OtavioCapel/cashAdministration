@@ -1,0 +1,46 @@
+@import '../../../../theme/mixins.scss';
+@import '../../../../theme/variables.scss';
+
+
+.menu {
+    height: 100vh;
+
+    .menu-content {
+        min-width: 75vw;
+        padding: .5rem;
+
+        .close {
+
+            @include display(flex-end, center);
+            ion-icon {
+                font-size: 1.5rem;
+            }
+    
+        }
+    }
+
+    ion-toolbar {
+        padding: 0 1rem;
+        position: fixed;
+        border-bottom: 1px solid $gray-primary;
+    
+        .title {
+            @include display(space-between, center);
+            p {
+                font-size: 1.2rem;
+                font-weight: 500; 
+                width:  auto;
+            }
+    
+            ion-icon {
+                font-size: 1.8rem
+            }
+        }
+    }
+    
+    .base-container {
+        height: -webkit-fill-available;
+        overflow: auto;
+        margin-top: 3.5rem;
+    }
+}   

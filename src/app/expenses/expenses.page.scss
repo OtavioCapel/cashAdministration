@@ -41,5 +41,29 @@
         .not-paid {
             background-color: $red-primary;
         }
+
+        .text-description {
+            width: 100%;
+            padding: .5rem;
+            height: auto;
+            margin-top: 1rem;
+            border-radius: 5px;
+            background: rgba($gray-primary, .4);
+            border: 1px solid $gray-primary;
+            
+            p {
+                margin: 0;
+            }
+        }
+
+        .edit-expense {
+            text-align: center;
+            margin-top: 1rem;
+            @include display(center, center, row);
+
+            ion-icon {
+                margin-left: .3rem;
+            }
+        }
     }
 }

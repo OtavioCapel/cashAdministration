@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="close">
       <ion-icon 
-        (click)="closeModal()"
+        (click)="closeModal('close')"
         name="close-outline"  
         matTooltip="Adicionar despesa"
         matTooltipPosition="left">
@@ -14,7 +14,7 @@
       
       <mat-form-field>
         <mat-label>Nome da despesa</mat-label>
-        <input matInput formControlName="name" mask="S*">
+        <input matInput formControlName="name" lettersOnly>
       </mat-form-field>
 
       <mat-form-field>
@@ -27,26 +27,36 @@
           prefix="R$ ">
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-checkbox color="primary" (change)="changePaid($event.checked)" formControlName="paid">Despesa paga?</mat-checkbox><br>
+      <mat-checkbox color="primary" formControlName="monthly">Despesa mensal?</mat-checkbox>
+
+      <mat-form-field *ngIf="!addExpenseForm.get('paid').value || addExpenseForm.get('monthly').value">
         <mat-label>Data vencimento</mat-label>
-        <input matInput [matDatepicker]="picker" formControlName="expireDate">
+        <input matInput #expire [matDatepicker]="picker" readonly (focus)="picker.open()" formControlName="expireDate">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
-      <mat-checkbox color="primary" formControlName="monthly">
-        Despesa mensal?
-      </mat-checkbox>
-
-      <mat-form-field>
-        <mat-label>Descrição</mat-label>
-        <textarea matInput formControlName="description"></textarea>
+      <mat-form-field *ngIf="addExpenseForm.get('paid').value">
+        <mat-label>Data de Pagamento</mat-label>
+        <input matInput [max]="maxDate" [matDatepicker]="picker" readonly (focus)="picker.open()" formControlName="paymentDate">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
 
 
-      <div class=" center-items">
+      <mat-form-field>
+        <mat-label>Descrição</mat-label>
+        <textarea maxlength="50" (input)="countChar()" matInput formControlName="description"></textarea>
+        <small matSuffix>{{ descriptionCharacters }}/50</small>
+      </mat-form-field>
+
+
+      <div class="flex-evenly">
         <button type="submit" class="primary" [disabled]="addExpenseForm.invalid">Adicionar</button>
+        <button type="button" class="secondary" (click)="delete(data)" *ngIf="data">Excluir</button>
       </div>
+
 
     </form>
 

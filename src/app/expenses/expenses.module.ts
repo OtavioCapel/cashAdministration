@@ -18,6 +18,8 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { NgxMaskModule } from 'ngx-mask';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { BaseTitleMenuComponent } from '../shared/components/menu/base-title-menu.component';
 
 
 
@@ -37,12 +39,13 @@ import { NgxMaskModule } from 'ngx-mask';
     FormsModule, 
     ReactiveFormsModule,
     MatNativeDateModule,
+    MatSlideToggleModule,
     MatCheckboxModule,
     NgxMaskModule.forRoot(),
   ],
   declarations: [
     ExpensesPage, 
-    UpdateExpenseComponent
+    UpdateExpenseComponent,
   ]
 })
 export class ExpensesPageModule {}

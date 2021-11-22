@@ -14,13 +14,26 @@ button {
 
         &:active {
             background-color: $purple-primary;
-            color: #fff;
+            color: $white-primary;
         }
+
     }
 
+    &.secondary {
+        color: $white-primary;
+        border: 1px solid $purple-primary;
+        background-color: $purple-primary;
+
+        &:active {
+            background-color: $white-primary;
+            color: $purple-primary;
+        }
+        
+    }
     &:disabled {
         background-color: $gray-primary;
-        color: #fff;
+        color: $white-primary;
         border: none;
     }
+
 }

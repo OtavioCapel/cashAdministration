@@ -27,15 +27,13 @@
 
 @import './theme/buttons.scss';
 @import './theme/mixins.scss';
+@import './theme/variables.scss';
 
 * {
     padding: 0;
     margin: 0;
 }
 
-p {
-    color: gray;
-}
 
 .center-items {
     @include display(center, center);

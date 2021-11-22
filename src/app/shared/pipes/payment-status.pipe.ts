@@ -1,6 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import * as moment from 'moment';
+import { Expense } from 'src/app/expenses/models/expenses.model';
+import { formatDate } from '../utils';
 
 @Pipe({
   name: 'paymentStatus'
@@ -8,18 +10,23 @@ import * as moment from 'moment';
 export class PaymentStatusPipe implements PipeTransform {
 
   transform(value: boolean, args?): string {
-    
-    let status;
-    let restDays = 0;
 
-    if(args) {
-      
-      const start = moment(new Date());
-      const end = moment(args);
-      restDays = end.diff(start, 'days');
-      
+    let status;
+    let expireStatus = 0;
+    let expense;
+
+    if(args) {     
+      expense = Object.assign({}, args);
+
+      if(expense.expireDate && expense.expireDate.seconds) {
+        expense.expireDate = expense.expireDate.toDate()
+        const end = moment(expense.expireDate);
+        const start = moment(new Date());
+        expireStatus = end.diff(start, 'days');
+      } 
+  
       if(!value) {
-        status = this.verifyDates(args, restDays)
+        status = this.verifyDates(args.expireDate, expireStatus)
       }
     }
 
