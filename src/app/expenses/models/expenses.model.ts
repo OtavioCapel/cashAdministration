@@ -8,6 +8,11 @@ export interface Expense {
     paid: boolean;
     expireDate?: Date;
     description?: string;
-    paymentDate?: Date;
+    paymentDate?: FirestoreDate | Date;
 }
 
+
+export interface FirestoreDate {
+    seconds: number;
+    nanoseconds: number;
+}

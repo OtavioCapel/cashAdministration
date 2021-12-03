@@ -1,7 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 import * as moment from 'moment';
-import { Expense } from 'src/app/expenses/models/expenses.model';
 import { formatDate } from '../utils';
 
 @Pipe({
@@ -13,20 +12,16 @@ export class PaymentStatusPipe implements PipeTransform {
 
     let status;
     let expireStatus = 0;
-    let expense;
 
     if(args) {     
-      expense = Object.assign({}, args);
-
-      if(expense.expireDate && expense.expireDate.seconds) {
-        expense.expireDate = expense.expireDate.toDate()
-        const end = moment(expense.expireDate);
-        const start = moment(new Date());
-        expireStatus = end.diff(start, 'days');
+      if(args.expireDate) {
+        const end = args.expireDate;
+        const start = new Date();
+        expireStatus = moment(end).diff(start, 'days') + 1;
       } 
   
       if(!value) {
-        status = this.verifyDates(args.expireDate, expireStatus)
+        status = this.verifyDates(formatDate(args.expireDate), expireStatus)
       }
     }
 
@@ -34,15 +29,20 @@ export class PaymentStatusPipe implements PipeTransform {
   }
 
   verifyDates(date, restDays): string {
- 
+    // Math.abs() convert negative number to positive number
+    // only to remove '-' simbol
+    restDays = Math.abs(restDays)
+
     if(restDays === 0) {
-      return  `Venceu hoje`
+      return  `Vence hoje`
+    }
+
+    if(restDays === 1) {
+      return  `Vence amanhã`
     }
 
     if (moment(new Date()).isAfter(date)) {
-      // Math.abs() convert negative number to positive number
-      // only to remove '-' simbol
-      return  `Venceu faz ${Math.abs(restDays)} dia${restDays > 1 ? 's' : ''}`
+      return  `Venceu faz ${restDays} dia${restDays > 1 ? 's' : ''}`
     }
     else {
       return `Vencimento em ${restDays} dia${restDays > 1 ? 's' : ''}`

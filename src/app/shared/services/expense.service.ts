@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
-import { from, Observable } from 'rxjs';
+import { from, Observable, of } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { Expense } from 'src/app/expenses/models/expenses.model';
+import { formatDate } from '../utils';
 
 @Injectable({
   providedIn: 'root'
@@ -21,9 +22,17 @@ export class ExpenseService {
     return from(this.expenseCollection.doc(_id).set(_expense));
   }
 
-  getExpenses() {
-    return from(this.expenseCollection.valueChanges())
-  }
+  getExpenses(): Observable<Expense[]> {
+    return this.expenseCollection.valueChanges().pipe(
+      map(expense => {
+        expense.map((item: any) => {
+          item.expireDate = formatDate(item.expireDate.seconds * 1000)
+          if(item.paymentDate) item.paymentDate = formatDate(item.paymentDate.seconds * 1000)  
+        })
+        return expense
+      })
+    )
+  } 
 
   updateExpense(expense: Expense) {
     return from(this.expenseCollection.doc(expense._id).update(expense));
@@ -35,5 +44,10 @@ export class ExpenseService {
 
   getExpenseById(id: string) {
 
+  }
+
+  filteredExpenses(attribute: string, condition, value: any) {
+    return this.database.collection('Expenses', ref => 
+    ref.where(attribute, condition, value)).valueChanges();
   }
 }

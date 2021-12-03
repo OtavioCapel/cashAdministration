@@ -28,9 +28,9 @@
       </mat-form-field>
 
       <mat-checkbox color="primary" (change)="changePaid($event.checked)" formControlName="paid">Despesa paga?</mat-checkbox><br>
-      <mat-checkbox color="primary" formControlName="monthly">Despesa mensal?</mat-checkbox>
+      <mat-checkbox color="primary" (change)="changeMonthly($event.checked)" formControlName="monthly">Despesa mensal?</mat-checkbox>
 
-      <mat-form-field *ngIf="!addExpenseForm.get('paid').value || addExpenseForm.get('monthly').value">
+      <mat-form-field *ngIf="addExpenseForm.get('monthly').value">
         <mat-label>Data vencimento</mat-label>
         <input matInput #expire [matDatepicker]="picker" readonly (focus)="picker.open()" formControlName="expireDate">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>

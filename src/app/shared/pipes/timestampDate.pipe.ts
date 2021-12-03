@@ -10,7 +10,7 @@ import { formatDate } from '../utils';
 export class TimestampDatePipe implements PipeTransform {
 
   transform(value: any, args?) {
-    return formatDate(value);
+    return formatDate(value)
 
   }
 

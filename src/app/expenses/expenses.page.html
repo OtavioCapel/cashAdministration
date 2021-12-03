@@ -11,22 +11,26 @@
     </div>
 
     <p>Filtros</p>
+    <p (click)="filterExpenses('paid', '==', true)">Pagas</p>
+    <p (click)="filterExpenses('paid', '!=', true)">Em Aberto</p (click)="filterExpenses()">
+    <p (click)="filterExpenses('expireDate', '<=', new Date())">Vencidas</p>
 
     <mat-accordion *ngIf="expenses">
       <ng-container *ngFor="let expense of expenses">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>{{ expense.name }}</mat-panel-title>
-          </mat-expansion-panel-header>
-
-          <div class="expense-data">
-            <p *ngIf="expense.expireDate">Vencimento: <strong>{{ expense.expireDate | timestampDate }}</strong></p>
-          <p *ngIf="expense.paymentDate">Pago dia: <strong>{{ expense.paymentDate | timestampDate}}</strong></p>
-            <p>Valor: 
-              <strong>{{ expense.value }}</strong>
+            <mat-panel-title>{{ expense.name }}  
               <span class="payment-status" [ngClass]="expense.paid ? 'paid' : 'not-paid'"> 
                 {{ expense.paid | paymentStatus: expense }} 
               </span>
+          </mat-panel-title>
+          </mat-expansion-panel-header>
+
+          <div class="expense-data">
+            <p *ngIf="expense.expireDate">Vencimento: <strong>{{ expense.expireDate | date: 'dd/MM/YYYY' }}</strong></p>
+            <p *ngIf="expense.paymentDate">Pago dia: <strong>{{ expense.paymentDate | date: 'dd/MM/YYYY' }}</strong></p>
+            <p>Valor: 
+              <strong>{{ expense.value | currency: 'BRL' }}</strong>
             </p>
 
             <div class="text-description" *ngIf="expense.description">

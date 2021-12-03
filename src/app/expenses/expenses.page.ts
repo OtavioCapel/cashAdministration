@@ -61,18 +61,18 @@ export class ExpensesPage implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: UpdateExpenseComponent,
       componentProps: {
-        'data': expense ? expense : null
+        'data': expense ? expense : null,
+        animated: true
       }
     });
 
-    // from(modal.onDidDismiss()).subscribe(result => {
-    //   if(!result.data) {
-    //     this.getExpenses();
-
-    //   }
-    // })
-
     return await modal.present();
+  }
+
+  filter(attribute, condition, value) {
+    this.expenseService.filteredExpenses(attribute, condition, value).subscribe(teste => {
+      console.log(teste)
+    })
   }
 
   teste() {

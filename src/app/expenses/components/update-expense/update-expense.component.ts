@@ -33,6 +33,7 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
     if(this.data) {
       this.addExpenseForm.patchValue(this.data);
       this.changePaid(this.data.paid);
+      this.changeMonthly(this.data.monthly);
     } 
     
   }
@@ -49,6 +50,8 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
     })
   }
 
+
+
   closeModal(value?): void {
     this.modalCtrl.dismiss(value);
   }
@@ -64,17 +67,18 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
 
   changePaid(checked: boolean): void {
     if(checked) {
-      this.addExpenseForm.get('expireDate').setValidators([]);
-      this.addExpenseForm.get('expireDate').setErrors(null);
-
-      this.addExpenseForm.get('paymentDate').setValidators([Validators.required])
+      this.addExpenseForm.addControl('paymentDate',  new FormControl('', Validators.required));
     } else {
-      this.addExpenseForm.get('expireDate').setValidators([Validators.required])
-
-      this.addExpenseForm.get('paymentDate').setValidators([])
-      this.addExpenseForm.get('paymentDate').setErrors(null);
+      this.addExpenseForm.removeControl('paymentDate')
     }
-    this.addExpenseForm.updateValueAndValidity();
+  }
+
+  changeMonthly(checked: boolean): void {
+    if(checked) {
+      this.addExpenseForm.addControl('expireDate',  new FormControl('', Validators.required));
+    } else {
+      this.addExpenseForm.removeControl('expireDate')
+    }
   }
 
   countChar() {

@@ -25,8 +25,8 @@ export function ExpenseReducer(state = initialState, action: ExpensesActions) {
             if(!action.payload._id) return
             const index = state.expenses.findIndex((item: Expense) => item._id === action.payload._id);
             const _expenses = [...state.expenses]
-            _expenses[index]= action.payload  
-            
+            _expenses[index] = action.payload  
+
             return {
                 ...state,
                 expenses: _expenses

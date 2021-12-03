@@ -1,16 +1,7 @@
-import * as moment from "moment";
-import { FormGroup } from "@angular/forms";
-
 export function formatDate(value) {
     if(value.seconds) {
-        value = value.toDate()
+        value = value.seconds * 10000
     }
   
-    return moment(new Date(value)).format('DD/MM/YYYY')
-}
-
-
-export function checkRequeridAllFields(form: FormGroup) {
-    console.log(form)
-    return
+    return new Date(value)
 }
