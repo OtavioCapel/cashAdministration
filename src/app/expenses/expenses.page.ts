@@ -9,7 +9,7 @@ import { select, Store } from '@ngrx/store';
 import { AddExpense, GetExpenses } from '../state/expenses/expense.actions';
 import { Router } from '@angular/router';
 import { ExpenseService } from '../shared/services/expense.service';
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-expenses',
@@ -17,9 +17,10 @@ import { filter } from 'rxjs/operators';
   styleUrls: ['./expenses.page.scss'],
 })
 export class ExpensesPage implements OnInit, OnDestroy {
-  expense$: Observable<Expense[]>;
+  expenses$: Observable<Expense[]>;
+  //expenses: Observable<Expense[]> 
 
-  expenses: Observable<Expense[]> 
+  currentDate = new Date();
   // [
   //   {name: 'Luz', value: '220,00', monthly: true, paid: false, expireDate: moment(new Date()).add(7, 'days')},
   //   {name: 'Agua', value: '110,00', monthly: true, paid: false, expireDate: moment(new Date()).subtract(7, 'days')},
@@ -42,16 +43,11 @@ export class ExpensesPage implements OnInit, OnDestroy {
   }
 
   getExpenses() {
-     this.store.pipe(select('expenses'))
+   this.expenses$ = this.store.pipe(select('expenses'))
     .pipe(
-      filter(expenses => !!expenses)
-    ).subscribe((result: any) => {
-      console.log(result)
-      this.expenses = result.expenses;
-    }, (err) => {
-      console.log(err)
-
-    })
+      filter(results => !!results),
+      map((result: any) => result.expenses)
+    )
 
     this.store.dispatch(new GetExpenses());
     
@@ -69,10 +65,15 @@ export class ExpensesPage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  filter(attribute, condition, value) {
-    this.expenseService.filteredExpenses(attribute, condition, value).subscribe(teste => {
-      console.log(teste)
-    })
+  filterExpenses(attribute, condition, value) {
+    let conditionToCompare = {
+      equal: '==',
+      different: '!=',
+      lessThan: '<=',
+      moreThan: '>=',
+    }
+    
+    this.expenses$ = this.expenseService.filteredExpenses(attribute, conditionToCompare[condition], value)
   }
 
   teste() {

@@ -12,7 +12,7 @@ import { AppState } from '..';
 import { ExpensesActionTypes, GetExpenses, GetExpensesSuccess } from './expense.actions';
  
 @Injectable()
-export class MovieEffects {
+export class ExpenseEffects {
  
   constructor(
     private store$: Store<AppState>,

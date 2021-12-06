@@ -1,6 +1,6 @@
 import { ActionReducerMap } from "@ngrx/store";
 import { Expense } from "../expenses/models/expenses.model";
-import { MovieEffects } from "./expenses/expense.effects";
+import { ExpenseEffects } from "./expenses/expense.effects";
 import { ExpenseReducer } from "./expenses/expense.reducer";
 
 
@@ -13,5 +13,5 @@ export const reducers: ActionReducerMap<AppState> = {
 }
 
 export const effects: Array<any> = [
-    MovieEffects
+    ExpenseEffects
 ]

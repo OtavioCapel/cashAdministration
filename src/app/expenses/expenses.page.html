@@ -11,11 +11,11 @@
     </div>
 
     <p>Filtros</p>
-    <p (click)="filterExpenses('paid', '==', true)">Pagas</p>
-    <p (click)="filterExpenses('paid', '!=', true)">Em Aberto</p (click)="filterExpenses()">
-    <p (click)="filterExpenses('expireDate', '<=', new Date())">Vencidas</p>
+    <p (click)="filterExpenses('paid', 'equal', true)">Pagas</p>
+    <p (click)="filterExpenses('paid', 'different', true)">Em Aberto</p>
+    <p (click)="getExpenses()">Limpar Filtros</p>
 
-    <mat-accordion *ngIf="expenses">
+    <mat-accordion *ngIf="expenses$ | async as expenses">
       <ng-container *ngFor="let expense of expenses">
         <mat-expansion-panel>
           <mat-expansion-panel-header>

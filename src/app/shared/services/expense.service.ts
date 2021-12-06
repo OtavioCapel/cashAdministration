@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { map, switchMap, switchMapTo } from 'rxjs/operators';
 import { Expense } from 'src/app/expenses/models/expenses.model';
 import { formatDate } from '../utils';
 
@@ -23,15 +23,9 @@ export class ExpenseService {
   }
 
   getExpenses(): Observable<Expense[]> {
-    return this.expenseCollection.valueChanges().pipe(
-      map(expense => {
-        expense.map((item: any) => {
-          item.expireDate = formatDate(item.expireDate.seconds * 1000)
-          if(item.paymentDate) item.paymentDate = formatDate(item.paymentDate.seconds * 1000)  
-        })
-        return expense
-      })
-    )
+    return from(this.expenseCollection.valueChanges().pipe(
+      switchMap(expense => this.formatTimestampToDate(expense))
+    ))
   } 
 
   updateExpense(expense: Expense) {
@@ -46,8 +40,18 @@ export class ExpenseService {
 
   }
 
-  filteredExpenses(attribute: string, condition, value: any) {
-    return this.database.collection('Expenses', ref => 
-    ref.where(attribute, condition, value)).valueChanges();
+  filteredExpenses(attribute: string, condition, value: any): Observable<Expense[]> {
+    return from(this.database.collection('Expenses', ref => 
+    ref.where(attribute, condition, value)).valueChanges()).pipe(
+      switchMap((expense: Expense[]) => this.formatTimestampToDate(expense))
+    )
+  }
+
+  formatTimestampToDate(expenseArray: Expense[]) {
+    expenseArray.map((item: any) => {
+      if (item.expireDate) item.expireDate = formatDate(item.expireDate)
+      if (item.paymentDate) item.paymentDate = formatDate(item.paymentDate)  
+    })
+    return of(expenseArray)
   }
 }
