@@ -27,8 +27,8 @@
           prefix="R$ ">
       </mat-form-field>
 
-      <mat-checkbox color="primary" (change)="changePaid($event.checked)" formControlName="paid">Despesa paga?</mat-checkbox><br>
-      <mat-checkbox color="primary" (change)="changeMonthly($event.checked)" formControlName="monthly">Despesa mensal?</mat-checkbox>
+      <mat-checkbox color="primary" (change)="changeCheckbox($event.checked, 'paymentDate')" formControlName="paid">Despesa paga?</mat-checkbox><br>
+      <mat-checkbox color="primary" (change)="changeCheckbox($event.checked, 'expireDate')" formControlName="monthly">Despesa mensal?</mat-checkbox>
 
       <mat-form-field *ngIf="addExpenseForm.get('monthly').value">
         <mat-label>Data vencimento</mat-label>
@@ -53,12 +53,14 @@
 
 
       <div class="flex-evenly">
-        <button type="submit" class="primary" [disabled]="addExpenseForm.invalid">Adicionar</button>
+        <button type="submit" class="primary" [disabled]="addExpenseForm.invalid">
+          {{ data ? 'Salvar' : 'Adicionar'}}
+        </button>
         <button type="button" class="secondary" (click)="delete(data)" *ngIf="data">Excluir</button>
       </div>
 
 
     </form>
-
   </div>
+
 </ion-content>

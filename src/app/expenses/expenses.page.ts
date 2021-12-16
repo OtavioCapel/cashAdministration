@@ -11,23 +11,25 @@ import { Router } from '@angular/router';
 import { ExpenseService } from '../shared/services/expense.service';
 import { filter, map } from 'rxjs/operators';
 
+export interface Filters {
+  filterLabel: string;
+  condition: string;
+}
+
 @Component({
   selector: 'app-expenses',
   templateUrl: './expenses.page.html',
   styleUrls: ['./expenses.page.scss'],
 })
 export class ExpensesPage implements OnInit, OnDestroy {
-  expenses$: Observable<Expense[]>;
-  //expenses: Observable<Expense[]> 
+  public expenses$: Observable<Expense[]>; 
+  public selectedFilter: string;
 
-  currentDate = new Date();
-  // [
-  //   {name: 'Luz', value: '220,00', monthly: true, paid: false, expireDate: moment(new Date()).add(7, 'days')},
-  //   {name: 'Agua', value: '110,00', monthly: true, paid: false, expireDate: moment(new Date()).subtract(7, 'days')},
-  //   {name: 'Net', value: '90,00', monthly: true, paid: true, expireDate: new Date()},
-  //   {name: 'Gás', value: '100,00', monthly: true, paid: false, expireDate: new Date()},
-  //   {name: 'Telefone', value: '1.160,00', monthly: false, paid: false, expireDate: new Date()},
-  // ]
+  public filters: Filters[] = [
+    {filterLabel: 'Pagas', condition: 'paid' },
+    {filterLabel: 'Vencidas', condition: 'expired'},
+    {filterLabel: 'Em aberto', condition: 'not-paid'}
+  ]
 
   constructor(
     public modalController: ModalController,
@@ -43,11 +45,12 @@ export class ExpensesPage implements OnInit, OnDestroy {
   }
 
   getExpenses() {
-   this.expenses$ = this.store.pipe(select('expenses'))
-    .pipe(
-      filter(results => !!results),
-      map((result: any) => result.expenses)
-    )
+    this.selectedFilter = '';
+    this.expenses$ = this.store.pipe(select('expenses'))
+      .pipe(
+        filter(results => !!results),
+        map((result: any) => result.expenses)
+      )
 
     this.store.dispatch(new GetExpenses());
     
@@ -57,7 +60,7 @@ export class ExpensesPage implements OnInit, OnDestroy {
     const modal = await this.modalController.create({
       component: UpdateExpenseComponent,
       componentProps: {
-        'data': expense ? expense : null,
+        data: expense ? expense : null,
         animated: true
       }
     });
@@ -65,15 +68,9 @@ export class ExpensesPage implements OnInit, OnDestroy {
     return await modal.present();
   }
 
-  filterExpenses(attribute, condition, value) {
-    let conditionToCompare = {
-      equal: '==',
-      different: '!=',
-      lessThan: '<=',
-      moreThan: '>=',
-    }
+  filterExpenses(condition) {
     
-    this.expenses$ = this.expenseService.filteredExpenses(attribute, conditionToCompare[condition], value)
+    this.expenses$ = this.expenseService.filteredExpenses(condition)
   }
 
   teste() {

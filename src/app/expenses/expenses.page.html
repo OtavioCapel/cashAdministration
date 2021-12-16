@@ -10,10 +10,22 @@
       </ion-icon>
     </div>
 
-    <p>Filtros</p>
-    <p (click)="filterExpenses('paid', 'equal', true)">Pagas</p>
-    <p (click)="filterExpenses('paid', 'different', true)">Em Aberto</p>
-    <p (click)="getExpenses()">Limpar Filtros</p>
+    <strong>Filtros</strong>
+
+    <div class="filter-container">
+      <ng-container *ngFor="let filter of filters">
+        <div class="card-filter" 
+          (click)="filterExpenses(filter.condition); selectedFilter = filter.filterLabel" 
+          [class.selected]="selectedFilter === filter.filterLabel">
+          <p>{{ filter.filterLabel }}</p>
+        </div>
+      </ng-container>
+    </div>
+
+    <p class="clear-filters" (click)="getExpenses()">
+      Limpar filtros
+      <ion-icon name="trash-outline"></ion-icon>
+    </p>
 
     <mat-accordion *ngIf="expenses$ | async as expenses">
       <ng-container *ngFor="let expense of expenses">

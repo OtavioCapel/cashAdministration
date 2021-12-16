@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { from, Observable, of } from 'rxjs';
-import { map, switchMap, switchMapTo } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Expense } from 'src/app/expenses/models/expenses.model';
 import { formatDate } from '../utils';
 
@@ -16,7 +16,7 @@ export class ExpenseService {
     private database: AngularFirestore,
   ) { }
 
-  addExpense(expense: Expense) {
+  addpdExpense(expense: Expense) {
     const _id = this.database.createId()
     const _expense = { ...expense, _id };
     return from(this.expenseCollection.doc(_id).set(_expense));
@@ -36,15 +36,30 @@ export class ExpenseService {
     return from(this.expenseCollection.doc(_id).delete());
   }
 
-  getExpenseById(id: string) {
+  filteredExpenses(condition: string): Observable<Expense[]> {
 
-  }
+    let query$: Observable<any>;
 
-  filteredExpenses(attribute: string, condition, value: any): Observable<Expense[]> {
-    return from(this.database.collection('Expenses', ref => 
-    ref.where(attribute, condition, value)).valueChanges()).pipe(
-      switchMap((expense: Expense[]) => this.formatTimestampToDate(expense))
-    )
+    switch(condition) {
+      case 'paid':
+        query$ = from(this.database.collection('Expenses', ref => 
+        ref.where('paid', '==', true)).valueChanges())
+        break;
+
+      case 'expired':
+        query$ = from(this.database.collection('Expenses', ref => 
+        ref.where('expireDate', '>', new Date())).valueChanges())
+        break;
+
+      case 'not-paid':
+        query$ = from(this.database.collection('Expenses', ref => 
+        ref.where('paid', '!=', true)).valueChanges())
+        break;
+    }
+
+      return query$.pipe(
+        switchMap((expense: Expense[]) => this.formatTimestampToDate(expense))
+      )
   }
 
   formatTimestampToDate(expenseArray: Expense[]) {

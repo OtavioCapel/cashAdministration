@@ -17,6 +17,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
 import { LOCALE_ID } from '@angular/core';
 import localePt from '@angular/common/locales/pt';
 import { registerLocaleData } from '@angular/common'
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 registerLocaleData(localePt);
 
 
@@ -24,12 +25,13 @@ registerLocaleData(localePt);
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
-    BrowserModule,         
+    BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule, 
+    AppRoutingModule,
     BrowserAnimationsModule,
     StateModule,
     AngularFirestoreModule,
+    HttpClientModule,
     AngularFireDatabaseModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     StoreDevtoolsModule.instrument({
@@ -42,4 +44,4 @@ registerLocaleData(localePt);
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

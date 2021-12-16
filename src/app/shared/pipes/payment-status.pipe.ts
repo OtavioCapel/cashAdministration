@@ -10,29 +10,23 @@ export class PaymentStatusPipe implements PipeTransform {
 
   transform(value: boolean, args?): string {
 
-    let status;
-    let expireStatus = 0;
+    let expireDays: number;
+
+    if(value) return 'Pago'
 
     if(args) {     
       if(args.expireDate) {
-        const end = args.expireDate;
-        const start = new Date();
-        expireStatus = moment(end).diff(start, 'days') + 1;
+        const end = moment(args.expireDate).format('YYYY-MM-DD');
+        const start = moment(new Date()).format('YYYY-MM-DD');
+        expireDays = moment(end).diff(start, 'days');
       } 
-  
-      if(!value) {
-        status = this.verifyDates(formatDate(args.expireDate), expireStatus)
-      }
+
+      return this.formatStatusString(expireDays)
     }
 
-    return value ? 'Pago' : status;
   }
 
-  verifyDates(date, restDays): string {
-    // Math.abs() convert negative number to positive number
-    // only to remove '-' simbol
-    restDays = Math.abs(restDays)
-
+  formatStatusString(restDays): string {
     if(restDays === 0) {
       return  `Vence hoje`
     }
@@ -41,10 +35,14 @@ export class PaymentStatusPipe implements PipeTransform {
       return  `Vence amanhã`
     }
 
-    if (moment(new Date()).isAfter(date)) {
+    if (restDays < 0) {
+      // Math.abs() convert negative number to positive number
+      // only to remove '-' simbol
+      restDays = Math.abs(restDays)
       return  `Venceu faz ${restDays} dia${restDays > 1 ? 's' : ''}`
     }
-    else {
+    
+    if (restDays > 1) {
       return `Vencimento em ${restDays} dia${restDays > 1 ? 's' : ''}`
     }
   }

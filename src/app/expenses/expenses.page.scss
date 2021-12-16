@@ -6,6 +6,35 @@
 
     padding: 10px;
 
+    .filter-container {
+        margin-top: .5rem;
+        @include display(space-between, center);
+        
+        .card-filter {
+            border-radius: 3px;
+            border: 1px solid $gray-primary;
+            min-width: 32%;
+            height: 3rem;
+            padding: .5rem;
+            @include display(center, center);
+        }
+        
+        .selected {
+            border-color: $green-primary;
+        }
+    }
+    
+    p.clear-filters {
+        @include display(flex-end, center);
+        text-align: end;
+        margin: .5rem 0 1.5rem 0;
+        color: $gray-primary;
+
+        ion-icon {
+            margin-left: .3rem;
+        }
+    }
+
     .add-expense {
         padding-right: .5rem;
         @include display(flex-end, center);
@@ -55,7 +84,6 @@
     }
 
     .payment-status {
-        width: fit-content;
         padding: 0.3rem;
         font-weight: 500;
         color: $white-primary;
