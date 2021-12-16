@@ -26,9 +26,9 @@ export class ExpensesPage implements OnInit, OnDestroy {
   public selectedFilter: string;
 
   public filters: Filters[] = [
-    {filterLabel: 'Pagas', condition: 'paid' },
-    {filterLabel: 'Vencidas', condition: 'expired'},
-    {filterLabel: 'Em aberto', condition: 'not-paid'}
+    { filterLabel: 'Pagas', condition: 'paid' },
+    { filterLabel: 'Vencidas', condition: 'expired' },
+    { filterLabel: 'Em aberto', condition: 'not-paid' }
   ]
 
   constructor(
