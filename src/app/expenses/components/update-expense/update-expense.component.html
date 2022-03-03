@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="close">
       <ion-icon 
-        (click)="closeModal('close')"
+        (click)="closeModal()"
         name="close-outline"  
         matTooltip="Adicionar despesa"
         matTooltipPosition="left">
@@ -28,22 +28,35 @@
       </mat-form-field>
 
       <mat-checkbox color="primary" (change)="changeCheckbox($event.checked, 'paymentDate')" formControlName="paid">Despesa paga?</mat-checkbox><br>
-      <mat-checkbox color="primary" (change)="changeCheckbox($event.checked, 'expireDate')" formControlName="monthly">Despesa mensal?</mat-checkbox>
+      <mat-checkbox color="primary" formControlName="monthly">Despesa mensal?</mat-checkbox>
 
-      <mat-form-field *ngIf="addExpenseForm.get('monthly').value">
-        <mat-label>Data vencimento</mat-label>
-        <input matInput #expire [matDatepicker]="picker" readonly (focus)="picker.open()" formControlName="expireDate">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-
-      <mat-form-field *ngIf="addExpenseForm.get('paid').value">
-        <mat-label>Data de Pagamento</mat-label>
-        <input matInput [max]="maxDate" [matDatepicker]="picker" readonly (focus)="picker.open()" formControlName="paymentDate">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-
+      <div class="flex">
+        <mat-form-field >
+          <mat-label>Data vencimento</mat-label>
+          <input matInput #expire [matDatepicker]="picker" readonly (focus)="picker.open()" formControlName="expireDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <ion-icon 
+          (click)="removeValue('expireDate')"
+          name="close-outline">
+        </ion-icon>
+      </div>
+    
+      
+      <div *ngIf="addExpenseForm.get('paid').value" class="flex">
+        <mat-form-field >
+          <mat-label>Data de Pagamento</mat-label>
+          <input matInput [max]="maxDate" [matDatepicker]="picker" readonly (focus)="picker.open()" formControlName="paymentDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <ion-icon 
+          (click)="removeValue('paymentDate')"
+          name="close-outline">
+        </ion-icon>
+      </div>
+        
 
       <mat-form-field>
         <mat-label>Descrição</mat-label>
@@ -51,7 +64,7 @@
         <small matSuffix>{{ descriptionCharacters }}/50</small>
       </mat-form-field>
 
-
+      
       <div class="flex-evenly">
         <button type="submit" class="primary" [disabled]="addExpenseForm.invalid">
           {{ data ? 'Salvar' : 'Adicionar'}}

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/firestore';
 import { from, Observable, of } from 'rxjs';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { map, switchMap } from 'rxjs/operators';
 import { Expense } from 'src/app/expenses/models/expenses.model';
 import { formatDate } from '../utils';
 
@@ -29,6 +29,9 @@ export class ExpenseService {
   } 
 
   updateExpense(expense: Expense) {
+    if(!expense.paymentDate) {
+      expense = { ...expense, paymentDate: null}
+    }
     return from(this.expenseCollection.doc(expense._id).update(expense));
   }
 
@@ -49,7 +52,7 @@ export class ExpenseService {
       case 'expired':
         query$ = from(this.database.collection('Expenses', ref => 
         ref.where('expireDate', '<', new Date())).valueChanges().pipe(
-          map((expense: Expense[]) => expense.filter(item => !item.paid))
+          map((expense: Expense[]) => expense.filter(item => !item.paymentDate))
         ))
         break;
 

@@ -1,12 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
-import { ChangeDetectorRef, AfterContentChecked} from '@angular/core'
-
 import { AppState } from 'src/app/state';
 import { AddExpense, DeleteExpense, UpdateExpense } from 'src/app/state/expenses/expense.actions';
 import { Expense } from '../../models/expenses.model';
+
 
 @Component({
   selector: 'app-update-expense',
@@ -31,11 +30,8 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
 
     if(this.data) {
       this.addExpenseForm.patchValue(this.data);
-      this.changeCheckbox(this.data.paid, 'paymentDate');
-      this.changeCheckbox(this.data.monthly, 'expireDate');
+      this.changeCheckbox(this.data.paymentDate ? true : false, 'paymentDate');
     } 
-    
-    this.addExpenseForm.valueChanges.subscribe(() => this.checkFieldTosetValidators());
     
   }
 
@@ -43,9 +39,10 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
     this.addExpenseForm = new FormGroup({
       name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.pattern('^[a-zA-Z \-\']+')]),
       value: new FormControl('', [Validators.required, Validators.min(0.1)]),
+      expireDate: new FormControl('', [Validators.required]),
       monthly: new FormControl(false),
       description: new FormControl(),
-      paid: new FormControl(false),
+      paid: new FormControl(this.data && this.data.paymentDate ? true : false),
     })
   }
 
@@ -62,28 +59,22 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
     this.closeModal();
   }
 
+  removeValue(formControlName: string) {
+    if (this.addExpenseForm.get(formControlName)) {
+      this.addExpenseForm.get(formControlName).setValue(null)
+    }
+  }
+
   changeCheckbox(checked = false, controlName: string) {
     if(checked) {
       this.addExpenseForm.addControl(controlName,  new FormControl(
         this.data ? this.data[controlName] : '', Validators.required 
       ));
     } else {
-      this.addExpenseForm.removeControl(controlName)
+      this.removeValue(controlName);
+      this.addExpenseForm.removeControl(controlName);
     }
-    this.checkFieldTosetValidators();
-  }
-
-  /*
-    Function to check paid and monthly form value, 
-    at least one must be filled in
-  */
-  checkFieldTosetValidators() {
-    const paid = this.addExpenseForm.get('paid').value;
-    const monthly = this.addExpenseForm.get('monthly').value;
-    
-    if(paid || monthly) this.addExpenseForm.setErrors(null)
-    else this.addExpenseForm.setErrors({ required: true })
-
+   
   }
 
   countChar() {
@@ -94,8 +85,8 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
     if(!this.addExpenseForm.valid) return;
     
     const formValue = this.addExpenseForm.getRawValue();
-    const expense: Expense = this.data ? { ...this.data,  ...formValue} : formValue
-
+    
+    const expense: Expense = this.data ? { _id: this.data._id,  ...formValue} : formValue
     if (expense._id) this.store$.dispatch(new UpdateExpense(expense))  
     else this.store$.dispatch(new AddExpense(expense));
     this.closeModal();

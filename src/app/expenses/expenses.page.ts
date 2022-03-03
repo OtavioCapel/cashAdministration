@@ -1,15 +1,14 @@
-import { Component, OnChanges, OnDestroy, OnInit } from '@angular/core';
-import { Expense } from './models/expenses.model';
-import * as moment from 'moment';
-import { ModalController } from '@ionic/angular';
-import { UpdateExpenseComponent } from './components/update-expense/update-expense.component';
-import { from, Observable } from 'rxjs';
-import { AppState } from '../state';
-import { select, Store } from '@ngrx/store';
-import { AddExpense, GetExpenses } from '../state/expenses/expense.actions';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ExpenseService } from '../shared/services/expense.service';
+import { ModalController } from '@ionic/angular';
+import { select, Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
+import { ExpenseService } from '../shared/services/expense.service';
+import { AppState } from '../state';
+import { GetExpenses } from '../state/expenses/expense.actions';
+import { UpdateExpenseComponent } from './components/update-expense/update-expense.component';
+import { Expense } from './models/expenses.model';
 
 export interface Filters {
   filterLabel: string;
@@ -53,7 +52,6 @@ export class ExpensesPage implements OnInit, OnDestroy {
       )
 
     this.store.dispatch(new GetExpenses());
-    
   }
 
   async updateExpense(expense?: Expense) {
@@ -69,7 +67,6 @@ export class ExpensesPage implements OnInit, OnDestroy {
   }
 
   filterExpenses(condition) {
-    
     this.expenses$ = this.expenseService.filteredExpenses(condition)
   }
 

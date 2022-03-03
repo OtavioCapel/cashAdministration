@@ -1,14 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
 import * as moment from 'moment';
-import { formatDate } from '../utils';
+
 
 @Pipe({
   name: 'paymentStatus'
 })
 export class PaymentStatusPipe implements PipeTransform {
 
-  transform(value: boolean, args?): string {
+  transform(value: string, args?): string {
 
     let expireDays: number;
 

@@ -24,7 +24,7 @@
         }
     }
     
-    p.clear-filters {
+    a.clear-filters {
         @include display(flex-end, center);
         text-align: end;
         margin: .5rem 0 1.5rem 0;

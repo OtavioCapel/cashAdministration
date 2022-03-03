@@ -22,18 +22,18 @@
       </ng-container>
     </div>
 
-    <p class="clear-filters" (click)="getExpenses()">
+    <a class="clear-filters" (click)="selectedFilter ? getExpenses(): ''">
       Limpar filtros
       <ion-icon name="trash-outline"></ion-icon>
-    </p>
+    </a>
 
     <mat-accordion *ngIf="expenses$ | async as expenses">
       <ng-container *ngFor="let expense of expenses">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
             <mat-panel-title>{{ expense.name }}  
-              <span class="payment-status" [ngClass]="expense.paid ? 'paid' : 'not-paid'"> 
-                {{ expense.paid | paymentStatus: expense }} 
+              <span class="payment-status" [ngClass]="expense.paymentDate ? 'paid' : 'not-paid'"> 
+                {{ expense.paymentDate | paymentStatus: expense }} 
               </span>
           </mat-panel-title>
           </mat-expansion-panel-header>

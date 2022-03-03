@@ -34,6 +34,16 @@
         @include display(space-evenly, center);
     }
 
+
+    .flex {
+        @include display(space-between, center);
+
+        ion-icon {
+            transform: scale(1.5);
+            margin-left: 0.5rem;
+        }
+    }
+
     textarea {
         resize: none;
     }
