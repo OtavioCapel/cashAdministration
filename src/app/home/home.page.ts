@@ -1,10 +1,11 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { Expense } from '../expenses/models/expenses.model';
+import { filter } from 'rxjs/operators';
 import { AppState } from '../state';
-import { AddExpense } from '../state/expenses/expense.actions';
+import { GetExpenses } from '../state/expenses/expense.actions';
+import { ExpenseTotalValue } from '../state/expenses/expense.selector';
 
 @Component({
   selector: 'app-home', 
@@ -13,8 +14,8 @@ import { AddExpense } from '../state/expenses/expense.actions';
 })
 export class HomePage implements OnInit {
 
-  expense$: Observable<Expense[]>
- 
+  expensetotalValue$: Observable<number> = this.store$.select(ExpenseTotalValue).pipe(filter(value => value))
+  
   constructor(
     private router: Router,
     private store$: Store<AppState>
@@ -23,6 +24,7 @@ export class HomePage implements OnInit {
 
 
   ngOnInit() {
+    this.store$.dispatch(new GetExpenses());
   }
 
   teste() {

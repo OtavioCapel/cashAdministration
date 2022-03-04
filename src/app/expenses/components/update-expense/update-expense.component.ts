@@ -27,7 +27,6 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
 
   ngOnInit() {
     this.createForm();
-
     if(this.data) {
       this.addExpenseForm.patchValue(this.data);
       this.changeCheckbox(this.data.paymentDate ? true : false, 'paymentDate');
@@ -67,10 +66,12 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
 
   changeCheckbox(checked = false, controlName: string) {
     if(checked) {
+      this.addExpenseForm.get('expireDate').setValidators(null);
       this.addExpenseForm.addControl(controlName,  new FormControl(
         this.data ? this.data[controlName] : '', Validators.required 
       ));
     } else {
+      this.addExpenseForm.get('expireDate').setValidators([Validators.required]);
       this.removeValue(controlName);
       this.addExpenseForm.removeControl(controlName);
     }

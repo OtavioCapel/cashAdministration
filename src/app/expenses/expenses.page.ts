@@ -6,7 +6,6 @@ import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 import { ExpenseService } from '../shared/services/expense.service';
 import { AppState } from '../state';
-import { GetExpenses } from '../state/expenses/expense.actions';
 import { UpdateExpenseComponent } from './components/update-expense/update-expense.component';
 import { Expense } from './models/expenses.model';
 
@@ -50,8 +49,6 @@ export class ExpensesPage implements OnInit, OnDestroy {
         filter(results => !!results),
         map((result: any) => result.expenses)
       )
-
-    this.store.dispatch(new GetExpenses());
   }
 
   async updateExpense(expense?: Expense) {
