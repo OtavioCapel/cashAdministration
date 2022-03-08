@@ -1,6 +1,8 @@
 <base-title-menu title="Home">
 <ion-content>
     <button (click)="teste()">GO</button>
-    <p>total em dividas: {{ expensetotalValue$ | async | currency  }}</p>
+    <p>total em dividas: {{ expenseTotalValue$ | async | currency  }}</p>
+    <p>total em dividas vencidas: {{ expenseExpireTotalValue$ | async | currency  }}</p>
+    <p>total em dividas pagas: {{ expensePaidTotalValue$ | async | currency  }}</p>
 </ion-content>
 </base-title-menu>

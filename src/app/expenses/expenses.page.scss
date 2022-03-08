@@ -6,6 +6,13 @@
 
     padding: 10px;
 
+    .expense-name {
+        text-overflow: ellipsis;
+        max-width: 8rem;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+
     .filter-container {
         margin-top: .5rem;
         @include display(space-between, center);

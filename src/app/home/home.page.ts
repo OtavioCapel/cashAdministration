@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { AppState } from '../state';
 import { GetExpenses } from '../state/expenses/expense.actions';
-import { ExpenseTotalValue } from '../state/expenses/expense.selector';
+import { ExpenseExpireTotalValue, ExpensePaidTotalValue, ExpenseTotalValue } from '../state/expenses/expense.selector';
 
 @Component({
   selector: 'app-home', 
@@ -14,7 +14,9 @@ import { ExpenseTotalValue } from '../state/expenses/expense.selector';
 })
 export class HomePage implements OnInit {
 
-  expensetotalValue$: Observable<number> = this.store$.select(ExpenseTotalValue).pipe(filter(value => value))
+  expenseTotalValue$: Observable<number> = this.store$.select(ExpenseTotalValue).pipe(filter(value => value));
+  expenseExpireTotalValue$: Observable<number> = this.store$.select(ExpenseExpireTotalValue).pipe(filter(value => value));
+  expensePaidTotalValue$: Observable<number> = this.store$.select(ExpensePaidTotalValue).pipe(filter(value => value));
   
   constructor(
     private router: Router,

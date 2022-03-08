@@ -31,7 +31,10 @@
       <ng-container *ngFor="let expense of expenses">
         <mat-expansion-panel>
           <mat-expansion-panel-header>
-            <mat-panel-title>{{ expense.name }}  
+            <mat-panel-title>
+              <p class="expense-name">
+                {{ expense.name }}
+              </p>  
               <span class="payment-status" [ngClass]="expense.paymentDate ? 'paid' : 'not-paid'"> 
                 {{ expense.paymentDate | paymentStatus: expense }} 
               </span>

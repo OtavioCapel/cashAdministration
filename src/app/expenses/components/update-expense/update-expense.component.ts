@@ -36,7 +36,7 @@ export class UpdateExpenseComponent implements OnInit, AfterContentChecked {
 
   createForm(): void {
     this.addExpenseForm = new FormGroup({
-      name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.pattern('^[a-zA-Z \-\']+')]),
+      name: new FormControl('', [Validators.required, Validators.minLength(1), Validators.maxLength(20), Validators.pattern('^[a-zA-Z \-\']+')]),
       value: new FormControl('', [Validators.required, Validators.min(0.1)]),
       expireDate: new FormControl('', [Validators.required]),
       monthly: new FormControl(false),

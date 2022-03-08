@@ -38,11 +38,11 @@ export class PaymentStatusPipe implements PipeTransform {
       // Math.abs() convert negative number to positive number
       // only to remove '-' simbol
       restDays = Math.abs(restDays)
-      return  `Venceu faz ${restDays} dia${restDays > 1 ? 's' : ''}`
+      return  `Vencida`
     }
     
     if (restDays > 1) {
-      return `Vencimento em ${restDays} dia${restDays > 1 ? 's' : ''}`
+      return `Em aberto`
     }
   }
 

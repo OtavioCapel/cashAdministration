@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { filter, map } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 import { ExpenseService } from '../shared/services/expense.service';
 import { AppState } from '../state';
+import { GetExpenses } from '../state/expenses/expense.actions';
+import { ExpenseSelector } from '../state/expenses/expense.selector';
 import { UpdateExpenseComponent } from './components/update-expense/update-expense.component';
 import { Expense } from './models/expenses.model';
 
@@ -31,7 +33,7 @@ export class ExpensesPage implements OnInit, OnDestroy {
 
   constructor(
     public modalController: ModalController,
-    private store: Store<AppState>,
+    private store$: Store<AppState>,
     private router: Router,
     private expenseService: ExpenseService
     ) {
@@ -44,11 +46,11 @@ export class ExpensesPage implements OnInit, OnDestroy {
 
   getExpenses() {
     this.selectedFilter = '';
-    this.expenses$ = this.store.pipe(select('expenses'))
-      .pipe(
-        filter(results => !!results),
-        map((result: any) => result.expenses)
-      )
+    this.expenses$ =  this.store$.select(ExpenseSelector)
+    .pipe(
+      filter(results => !!results),
+    )
+    this.store$.dispatch(new GetExpenses());
   }
 
   async updateExpense(expense?: Expense) {
