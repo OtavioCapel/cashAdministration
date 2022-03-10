@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { StoreModule } from '@ngrx/store';
-import { effects, reducers } from '.';
+import { NgModule } from '@angular/core';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { effects } from '.';
+import { ExpenseReducer } from './expenses/expense.reducer';
 
 
 
@@ -10,7 +11,7 @@ import { EffectsModule } from '@ngrx/effects';
   declarations: [],
   imports: [
     CommonModule,
-    StoreModule.forRoot(reducers),
+    StoreModule.forRoot({ ExpenseReducer }),
     EffectsModule.forRoot(effects)
   ]
 })

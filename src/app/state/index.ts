@@ -1,17 +1,18 @@
-import { ActionReducerMap } from "@ngrx/store";
 import { Expense } from "../expenses/models/expenses.model";
 import { ExpenseEffects } from "./expenses/expense.effects";
-import { ExpenseReducer } from "./expenses/expense.reducer";
 
 
 export interface AppState {
-    expenses: Expense[]
+    expenses: Expense[],
+    loading: boolean
 }
 
-export const reducers: ActionReducerMap<AppState> = {
-    expenses: ExpenseReducer
+export const initialState: AppState = {
+    expenses: [],
+    loading: false
 }
 
 export const effects: Array<any> = [
     ExpenseEffects
 ]
+

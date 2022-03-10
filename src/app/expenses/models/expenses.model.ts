@@ -7,6 +7,5 @@ export interface Expense {
     expireDate?: Date;
     description?: string;
     paymentDate?: string;
+    loading: boolean;
 }
-
-

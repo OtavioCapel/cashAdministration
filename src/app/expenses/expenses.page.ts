@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterContentChecked, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Store } from '@ngrx/store';
@@ -7,7 +7,7 @@ import { filter } from 'rxjs/operators';
 import { ExpenseService } from '../shared/services/expense.service';
 import { AppState } from '../state';
 import { GetExpenses } from '../state/expenses/expense.actions';
-import { ExpenseSelector } from '../state/expenses/expense.selector';
+import { ExpensesValue, LoadingValue } from '../state/expenses/expense.selector';
 import { UpdateExpenseComponent } from './components/update-expense/update-expense.component';
 import { Expense } from './models/expenses.model';
 
@@ -21,8 +21,10 @@ export interface Filters {
   templateUrl: './expenses.page.html',
   styleUrls: ['./expenses.page.scss'],
 })
-export class ExpensesPage implements OnInit, OnDestroy {
+export class ExpensesPage implements OnInit, OnDestroy, AfterContentChecked {
   public expenses$: Observable<Expense[]>; 
+  public state$: Observable<AppState[]>; 
+
   public selectedFilter: string;
 
   public filters: Filters[] = [
@@ -30,12 +32,14 @@ export class ExpensesPage implements OnInit, OnDestroy {
     { filterLabel: 'Vencidas', condition: 'expired' },
     { filterLabel: 'Em aberto', condition: 'not-paid' }
   ]
+  loading$: Observable<boolean>;
 
   constructor(
     public modalController: ModalController,
     private store$: Store<AppState>,
     private router: Router,
-    private expenseService: ExpenseService
+    private expenseService: ExpenseService,
+    private changeDetector: ChangeDetectorRef
     ) {
 
   }
@@ -44,12 +48,19 @@ export class ExpensesPage implements OnInit, OnDestroy {
     this.getExpenses();
   }
 
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
+  }
+
   getExpenses() {
     this.selectedFilter = '';
-    this.expenses$ =  this.store$.select(ExpenseSelector)
+    this.expenses$ =  this.store$.select(ExpensesValue)
     .pipe(
       filter(results => !!results),
     )
+    this.loading$ =  this.store$.select(LoadingValue)
+
+   
     this.store$.dispatch(new GetExpenses());
   }
 
