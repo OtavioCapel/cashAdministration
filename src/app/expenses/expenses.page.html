@@ -66,10 +66,9 @@
       </ng-container>
     </mat-accordion>
   </div>
-  {{loading$ | async}}
+
   <div *ngIf="loading$ | async" >
-    dasuidsaiudsaiugiudsa
-    {{loading$ | async}}
+   <app-loading></app-loading>
   </div>
   <button (click)="teste()">teste</button>
 </ion-content>
